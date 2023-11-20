@@ -7,6 +7,7 @@ Rodrigo Barba - Shinia
  */
 
 /* Verificación de inicio de sesión */
+/*
 var authenticatedUser = localStorage.getItem("authenticatedUser");
 
 if (!authenticatedUser) {
@@ -26,10 +27,11 @@ setTimeout(function () {
     // Limpiar la sesión local y redirigir a la página de inicio de sesión
     localStorage.removeItem("authenticatedUser");
     window.location.href = "../html/index.html";
-}, 999999999); // 10000 milisegundos = 10 segundos
+}, 10); // 10000 milisegundos = 10 segundos
 
 // Cerrar sesión cuando se presiona el botón de cerrar sesión
 function logout() {
     localStorage.removeItem("authenticatedUser");
     window.location.href = "../html/index.html";
 }
+*/

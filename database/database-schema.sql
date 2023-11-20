@@ -6,6 +6,8 @@ CREATE SCHEMA flower_shop;
 USE flower_shop;
 
 /* Crear Tabla 'users' */
+DROP TABLE IF EXISTS flower_shop.users;
+ALTER TABLE flower_shop.users AUTO_INCREMENT = 1;
 CREATE TABLE flower_shop.users
 (
     id smallint unsigned NOT NULL AUTO_INCREMENT,
@@ -18,7 +20,34 @@ CREATE TABLE flower_shop.users
     phone varchar(20),
     user_type tinyint NOT NULL,
     PRIMARY KEY (id)
+)   ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/* Crear Tabla 'products' */
+DROP TABLE IF EXISTS flower_shop.products;
+ALTER TABLE flower_shop.products AUTO_INCREMENT = 1;
+CREATE TABLE flower_shop.products
+(
+    id smallint unsigned NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    description varchar(255) NOT NULL,
+    price decimal(10,2) NOT NULL,
+    url_image varchar(255),
+    PRIMARY KEY (id)
 )   ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/* Crear Tabla 'user_cart' */
+DROP TABLE IF EXISTS flower_shop.user_cart;
+ALTER TABLE flower_shop.user_cart AUTO_INCREMENT = 1;
+CREATE TABLE flower_shop.user_cart
+(
+    id smallint unsigned NOT NULL AUTO_INCREMENT,
+    user_id smallint unsigned NOT NULL,
+    product_id smallint unsigned NOT NULL,
+    quantity smallint unsigned NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES flower_shop.users(id),
+    FOREIGN KEY (product_id) REFERENCES flower_shop.products(id)
+)   ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /* Crear Procedimiento Almacenado 'add_user' */
 DROP PROCEDURE IF EXISTS sp_add_user;
@@ -90,3 +119,5 @@ CALL sp_add_user("administrador-2", "admin-2", "Anna", "Collins", "annacollins@m
 /* Verificar Usuarios 'Administrador' */
 CALL sp_verify_identity("administrador-1", "admin-1");
 CALL sp_verify_identity("administrador-2", "admin-2");
+
+select * from products;

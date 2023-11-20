@@ -39,6 +39,11 @@ body {
     box-shadow: 5px 5px 15px 0px #5b5b5b;
 }
 
+#admin-link {
+    color: #80c2af;
+    font-weight: bolder;
+}
+
 .card-custom {
     width: 95%;
     height: 50%;

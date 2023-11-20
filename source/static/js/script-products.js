@@ -5,7 +5,7 @@
  */
 
 /* Verificación de inicio de sesión */
-
+/*
 var authenticatedUser = localStorage.getItem("authenticatedUser");
 
 if (!authenticatedUser) {
@@ -35,11 +35,11 @@ function logout() {
   localStorage.removeItem("authenticatedUser");
   window.location.href = "../html/index.html";
 }
-
+*/
 /* Verificación de inicio de sesión */
 
 /* Gestión de productos */
-
+/*
 // Datos iniciales de productos (esto podría ser reemplazado por una base de datos real)
 let products = [];
 
@@ -162,3 +162,14 @@ function displayProducts() {
 // Cargar los productos almacenados al cargar la página
 loadProductsFromLocalStorage();
 displayProducts();
+*/
+
+$(document).ready(function() {
+    $('#product-table').DataTable({
+        "paging": true,        // Habilita la paginación
+        "searching": true,     // Habilita la búsqueda
+        "ordering": true,      // Habilita la ordenación
+        "info": true,          // Muestra información sobre la paginación
+        "lengthChange": true   // Permite cambiar el número de elementos mostrados por página
+    });
+});

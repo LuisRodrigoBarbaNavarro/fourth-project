@@ -39,6 +39,11 @@ body {
     box-shadow: 5px 5px 15px 0px #5b5b5b;
 }
 
+#admin-link {
+    color: #80c2af;
+    font-weight: bolder;
+}
+
 .container-input-custom {
     width: 95%;
     margin: 0 auto;

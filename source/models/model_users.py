@@ -1,4 +1,4 @@
-from .entities.users import Users as User
+from .entities.users import Users
 
 class ModelUsers():
     @classmethod
@@ -7,13 +7,12 @@ class ModelUsers():
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_verify_identity(%s, %s)", (user.username, user.password))
             row = cursor.fetchone()
-            if row[0] is not None:
-                user = User(row[0], row[1], row[2], row[4], row[3], row[5], row[6], row[7])
-                return user
+            if row[0] != None:
+                return Users(row[0], row[1], row[2], row[4], row[3], row[5], row[6], row[7], row[8])
             else:
                 return None
-        except Exception as error:
-            raise Exception(error)
+        except Exception as ex:
+            raise Exception(ex)
     
     @classmethod
     def get_user_by_id(self, db, id):
@@ -22,7 +21,7 @@ class ModelUsers():
             cursor.execute("SELECT * FROM flower_shop.users WHERE id = %s", (id))
             row = cursor.fetchone()
             if row != None:
-                return User(row[0], row[1], row[2], row[4], row[3], row[5], row[6], row[7])
+                return Users(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
             else:
                 return None
         except Exception as ex:

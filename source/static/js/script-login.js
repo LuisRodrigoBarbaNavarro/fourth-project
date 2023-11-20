@@ -6,6 +6,7 @@ Rodrigo Barba - Shinia
  * @fileoverview Archivo JS para la página de inicio de sesión
  */
 
+/*
 function authenticate() {
     var username = document.getElementById("usernameInput").value;
     var password = document.getElementById("passwordInput").value;
@@ -26,3 +27,4 @@ function authenticate() {
         alert("Credenciales incorrectas. Por favor, inténtalo de nuevo.");
     }
 }
+*/
