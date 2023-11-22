@@ -26,3 +26,43 @@ class ModelUsers():
                 return None
         except Exception as ex:
             raise Exception(ex)
+        
+    @classmethod
+    def get_users(cls, db):
+        try:
+            sql_statement = """
+                            SELECT * FROM flower_shop.users
+                            """
+            cursor = db.connection.cursor()
+            cursor.execute(sql_statement)
+            users = cursor.fetchall()
+            return users
+        except Exception as e:
+            raise Exception(e)
+
+    @classmethod
+    def add_user(self, db, user):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_add_user(%s, %s, %s, %s, %s, %s, %s, %s)", (user.username, user.password, user.name, user.lastname, user.email, user.address, user.phone, user.userType))
+            db.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def edit_user(self, db, user):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_edit_user(%s, %s, %s, %s, %s, %s, %s, %s, %s)", (user.id, user.username, user.password, user.name, user.lastname, user.email, user.address, user.phone, user.userType))
+            db.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def delete_user(self, db, id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_delete_user(%s)", (id))
+            db.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)

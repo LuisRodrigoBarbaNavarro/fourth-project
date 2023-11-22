@@ -89,6 +89,61 @@ BEGIN
 END //
 DELIMITER ;
 
+/* Crear Procedimiento Almacenado 'edit_user' */
+DROP PROCEDURE IF EXISTS sp_edit_user;
+DELIMITER //
+CREATE PROCEDURE sp_edit_user
+(
+    IN p_id SMALLINT UNSIGNED,
+    IN p_username VARCHAR(20),
+    IN p_password VARCHAR(102),
+    IN p_first_name VARCHAR(50),
+    IN p_last_name VARCHAR(50),
+    IN p_email VARCHAR(50),
+    IN p_physical_address VARCHAR(255),
+    IN p_phone VARCHAR(20),
+    IN p_user_type TINYINT
+)
+BEGIN
+    DECLARE user_count INT;
+    DECLARE hashed_password VARCHAR(255);
+    SET hashed_password = SHA2(p_password, 256);
+
+    -- Verificar si el usuario ya existe.
+    SELECT COUNT(*) INTO user_count FROM flower_shop.users WHERE username = p_username COLLATE utf8mb4_unicode_ci;
+    
+    -- Manejar la excepción de usuario duplicado.
+    IF user_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Usuario ya existe.';
+    END IF;
+
+    -- Verificar campos nulos.
+    IF p_username IS NULL OR p_password IS NULL OR p_user_type IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Campos obligatorios no pueden ser nulos.';
+    END IF;
+
+    -- Actualizar el usuario.
+    UPDATE users
+    SET username = p_username, password = hashed_password, first_name = p_first_name, last_name = p_last_name, email = p_email, physical_address = p_physical_address, phone = p_phone, user_type = p_user_type
+    WHERE id = p_id;
+END //
+DELIMITER ;
+
+/* Crear Procedimiento Almacenado 'delete_user' */
+DROP PROCEDURE IF EXISTS sp_delete_user;
+DELIMITER //
+CREATE PROCEDURE sp_delete_user
+(
+    IN p_id SMALLINT UNSIGNED
+)
+BEGIN
+    -- Eliminar el usuario.
+    DELETE FROM users WHERE id = p_id;
+END //
+DELIMITER ;
+
 /* Crear Procedimiento Almacenado 'verify_identity' */
 DROP PROCEDURE IF EXISTS sp_verify_identity;
 DELIMITER //

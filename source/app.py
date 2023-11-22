@@ -77,10 +77,16 @@ def admin_required(func):
 
 # Views - Start
 
+# Dashboard - Start
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
     return render_template("public/dashboard.html")
+
+# Dashboard - End
+
+# Products - Start
 
 @app.route("/products")
 @login_required
@@ -150,12 +156,17 @@ def delete_product(id):
     else:
         return render_template("public/products-delete.html", id=id)
 
+# Products - End
+
+# Users - Start
+
 @app.route("/users")
 @login_required
 @admin_required
 def users():
     try:
-        return render_template("public/users-add.html")
+        users = ModelUsers.get_users(db)
+        return render_template("public/users-add.html", users=users)
     except Exception as e:
         raise Exception(e)
     
@@ -163,8 +174,58 @@ def users():
 @login_required
 @admin_required
 def add_user():
-    pass
+    if request.method == "POST":
+        user = Users (
+            0,
+            request.form["usernameInput"],
+            request.form["passwordInput"],
+            request.form["firstnameInput"],
+            request.form["lastnameInput"],
+            request.form["emailInput"],
+            request.form["addressInput"],
+            request.form["phoneInput"],
+            request.form["userTypeInput"]
+        )
+        ModelUsers.add_user(db, user)
+        flash("Usuario insertado correctamente.")
+        return redirect(url_for("users"))
+    else:
+        return render_template("public/users-add.html")
+
+@app.route("/users/edit/<int:id>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_user(id):
+    if request.method == "POST":
+        user = Users (
+            id,
+            request.form["usernameInput"],
+            request.form["passwordInput"],
+            request.form["firstnameInput"],
+            request.form["lastnameInput"],
+            request.form["emailInput"],
+            request.form["addressInput"],
+            request.form["phoneInput"],
+            request.form["userTypeInput"]
+        )
+        ModelUsers.edit_user(db, user)
+        flash("Usuario actualizado correctamente.")
+        return redirect(url_for("users"))
+    else:
+        return render_template("public/users-edit.html", id=id, user=ModelUsers.get_user_by_id(db, id))
+
+@app.route("/users/delete/<int:id>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def delete_user(id):
+    if request.method == "POST":
+        ModelUsers.delete_user(db, id)
+        flash("Usuario eliminado correctamente.")
+        return redirect(url_for("users"))
+    else:
+        return render_template("public/users-delete.html", id=id)
     
+# Users - End    
 
 @app.route("/shop")
 @login_required
