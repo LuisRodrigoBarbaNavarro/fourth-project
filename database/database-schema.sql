@@ -4,9 +4,9 @@ DROP SCHEMA IF EXISTS flower_shop;
 CREATE SCHEMA flower_shop;
 USE flower_shop;
 
-/* ***** Esquema ******/
+/* ***** Esquema ***** */
 
-/* ***** Tablas ******/
+/* ***** Tablas ****** */
 
 /* Tabla 'users' */
 DROP TABLE IF EXISTS flower_shop.users;
@@ -199,6 +199,42 @@ DELIMITER ;
 
 /* ***** Procedimientos Almacenados - 'users' ******/
 
+/* ***** Procedimientos Almacenados - 'products' ******/
+
+/* Procedimiento Almacenado 'add_product' */
+DROP PROCEDURE IF EXISTS sp_add_product;
+DELIMITER //
+CREATE PROCEDURE sp_add_product
+(
+    IN p_name VARCHAR(255),
+    IN p_description VARCHAR(255),
+    IN p_price DECIMAL(10,2),
+    IN p_url_image VARCHAR(255)
+)
+BEGIN
+    DECLARE product_count INT;
+
+    -- Verificar si el producto ya existe.
+    SELECT COUNT(*) INTO product_count FROM products WHERE name = p_name COLLATE utf8mb4_unicode_ci;
+    
+    -- Manejar la excepción de producto duplicado.
+    IF product_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Producto ya existe.';
+    END IF;
+
+    -- Verificar campos nulos.
+    IF p_name IS NULL OR p_description IS NULL OR p_price IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Error: Campos obligatorios no pueden ser nulos.';
+    END IF;
+
+    -- Insertar el nuevo producto.
+    INSERT INTO products (name, description, price, url_image)
+    VALUES (p_name, p_description, p_price, p_url_image);
+END //
+DELIMITER ;
+
 /* ***** Procedimientos Almacenados - 'shopping_cart' ******/
 
 /* Procedimiento Almacenado 'get_shopping_cart' */
@@ -278,14 +314,33 @@ END //
 DELIMITER ;
 /* Procedimiento Almacenado 'clear_shopping_cart' */
 
+/* Procedimiento Almacenado 'get_essential_data' */
+DROP PROCEDURE IF EXISTS sp_get_essential_data;
+DELIMITER //
+CREATE PROCEDURE sp_get_essential_data()
+BEGIN
+    SELECT shopping_cart.id, products.name, shopping_cart.quantity, products.price, (shopping_cart.quantity * products.price) AS total_price
+    FROM shopping_cart
+    INNER JOIN products ON shopping_cart.product_id = products.id;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'get_essential_data' */
+
 /* ***** Procedimientos Almacenados - 'shopping_cart' ******/
 
-/* Crear Usuarios 'Administrador' */
+/* Usuarios 'Administrador' */
 CALL sp_add_user("administrador-1", "admin-1", "John", "Doe", "johndoe@mail.com", "Calle 1 # 2-3", "1234567890", 1);
 CALL sp_add_user("administrador-2", "admin-2", "Anna", "Collins", "annacollins@mail.com", "Calle 2 # 2-3", "1234567890", 1);
 
-/* Verificar Usuarios 'Administrador' */
-CALL sp_verify_identity("administrador-1", "admin-1");
-CALL sp_verify_identity("administrador-2", "admin-2");
-
-select * from shopping_cart;
+/* Productos - 10 - 'Flores' */
+CALL sp_add_product("Rosa", "Rosa roja", 10000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Girasol", "Girasol amarillo", 15000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Orquídea", "Orquídea morada", 20000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Tulipán", "Tulipán rojo", 25000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Margarita", "Margarita blanca", 30000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Lirio", "Lirio amarillo", 35000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Clavel", "Clavel rosado", 40000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Crisantemo", "Crisantemo blanco", 45000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Hortensia", "Hortensia azul", 50000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+CALL sp_add_product("Lavanda", "Lavanda morada", 55000, "https://i.pinimg.com/originals/0e/0d/9a/0e0d9a5e2b5b6b6b5b6b5b6b5b6b5b6b.jpg");
+/* Productos - 10 - 'Flores' */
