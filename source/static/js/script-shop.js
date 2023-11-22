@@ -88,7 +88,7 @@ document.addEventListener("click", function (e) {
 /* Funciones de la calculadora */
 
 /* Funciones de la tienda */
-
+/*
 // Arreglo de productos en el cart
 const cart = [];
 
@@ -236,5 +236,5 @@ btnBuy.addEventListener("click", function () {
     alert("El cart está vacío.");
   }
 });
-
+*/
 /* Funciones de la tienda */

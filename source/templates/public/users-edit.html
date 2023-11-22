@@ -1,7 +1,7 @@
 <!-- Rodrigo Barba - Shinia -->
 {% extends 'base.html' %}
 {% block css_sheets %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style-shop.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style-products.css') }}">
 {% endblock %}
 {% block subtitle %} Usuarios - Insertar Usuarios {% endblock %}
 {% block content %}
@@ -26,46 +26,46 @@
         <h1 class="pt-3 mt-3"><i class="fa-solid fa-wand-magic-sparkles" style="color: #80c2af;"></i> - Insertar Producto</i></h1>
         <div class="row">
             <div class="col-md-12">
-                <form id="product-form" action="/users/add" method="POST">
+                <form id="product-form" action="/users/edit/{{ id }}" method="POST">
                     <div class="form-group mt-3">
                         <label for="">Usuario:</label>
                         <input type="text" class="form-control" id="" name="usernameInput"
-                            value="{{ usernameField }}" required>
+                            value="{{ user.username }}" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Contraseña:</label>
                         <input type="text" class="form-control" id="" name="passwordInput"
-                            value="{{ passwordField }}" required>
+                            value="" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Nombre:</label>
                         <input type="text" class="form-control" id="" name="firstnameInput"
-                            value="{{ firstnameField }}" required>
+                            value="{{ user.firstname  }}" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Apellido:</label>
                         <input type="text" class="form-control" id="" name="lastnameInput"
-                            value="{{ lastnameField }}" required>
+                            value="{{ user.lastname }}" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Correo Electrónico:</label>
                         <input type="text" class="form-control" id="" name="emailInput"
-                            value="{{ emailField }}" required>
+                            value="{{ user.email  }}" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Dirección:</label>
                         <input type="text" class="form-control" id="" name="addressInput"
-                            value="{{ addressField }}" required>
+                            value="{{ user.physical_address }}" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Teléfono:</label>
                         <input type="text" class="form-control" id="" name="phoneInput"
-                            value="{{ phoneField }}" required>
+                            value="{{ user.phone  }}" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="">Tipo:</label>
                         <input type="text" class="form-control" id="" name="userTypeInput"
-                            value="{{ userTypeField }}" required>
+                            value="{{ user.user_type }}" required>
                     </div>
                     <button type="submit" class="btn btn-success mt-3">Guardar</button>
                 </form>

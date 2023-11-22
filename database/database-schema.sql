@@ -1,11 +1,14 @@
-/* Crear Esquema */
+/* ***** Esquema ******/
+
 DROP SCHEMA IF EXISTS flower_shop;
 CREATE SCHEMA flower_shop;
-
-/* Usar Esquema */
 USE flower_shop;
 
-/* Crear Tabla 'users' */
+/* ***** Esquema ******/
+
+/* ***** Tablas ******/
+
+/* Tabla 'users' */
 DROP TABLE IF EXISTS flower_shop.users;
 ALTER TABLE flower_shop.users AUTO_INCREMENT = 1;
 CREATE TABLE flower_shop.users
@@ -21,8 +24,9 @@ CREATE TABLE flower_shop.users
     user_type tinyint NOT NULL,
     PRIMARY KEY (id)
 )   ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/* Tabla 'users' */
 
-/* Crear Tabla 'products' */
+/* Tabla 'products' */
 DROP TABLE IF EXISTS flower_shop.products;
 ALTER TABLE flower_shop.products AUTO_INCREMENT = 1;
 CREATE TABLE flower_shop.products
@@ -34,22 +38,28 @@ CREATE TABLE flower_shop.products
     url_image varchar(255),
     PRIMARY KEY (id)
 )   ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/* Tabla 'products' */
 
-/* Crear Tabla 'user_cart' */
-DROP TABLE IF EXISTS flower_shop.user_cart;
-ALTER TABLE flower_shop.user_cart AUTO_INCREMENT = 1;
-CREATE TABLE flower_shop.user_cart
+/* Tabla 'shopping_cart' */
+DROP TABLE IF EXISTS flower_shop.shopping_cart;
+ALTER TABLE flower_shop.shopping_cart AUTO_INCREMENT = 1;
+CREATE TABLE flower_shop.shopping_cart
 (
     id smallint unsigned NOT NULL AUTO_INCREMENT,
     user_id smallint unsigned NOT NULL,
     product_id smallint unsigned NOT NULL,
     quantity smallint unsigned NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES flower_shop.users(id),
-    FOREIGN KEY (product_id) REFERENCES flower_shop.products(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 )   ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/* Tabla 'shopping_cart' */
 
-/* Crear Procedimiento Almacenado 'add_user' */
+/* ***** Tablas ******/
+
+/* ***** Procedimientos Almacenados - 'users' ******/
+
+/* Procedimiento Almacenado 'add_user' */
 DROP PROCEDURE IF EXISTS sp_add_user;
 DELIMITER //
 CREATE PROCEDURE sp_add_user
@@ -88,8 +98,9 @@ BEGIN
     VALUES (p_username, hashed_password, p_first_name, p_last_name, p_email, p_physical_address, p_phone, p_user_type);
 END //
 DELIMITER ;
+/* Procedimiento Almacenado 'add_user' */
 
-/* Crear Procedimiento Almacenado 'edit_user' */
+/* Procedimiento Almacenado 'edit_user' */
 DROP PROCEDURE IF EXISTS sp_edit_user;
 DELIMITER //
 CREATE PROCEDURE sp_edit_user
@@ -109,15 +120,6 @@ BEGIN
     DECLARE hashed_password VARCHAR(255);
     SET hashed_password = SHA2(p_password, 256);
 
-    -- Verificar si el usuario ya existe.
-    SELECT COUNT(*) INTO user_count FROM flower_shop.users WHERE username = p_username COLLATE utf8mb4_unicode_ci;
-    
-    -- Manejar la excepción de usuario duplicado.
-    IF user_count > 0 THEN
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Error: Usuario ya existe.';
-    END IF;
-
     -- Verificar campos nulos.
     IF p_username IS NULL OR p_password IS NULL OR p_user_type IS NULL THEN
         SIGNAL SQLSTATE '45000'
@@ -130,8 +132,9 @@ BEGIN
     WHERE id = p_id;
 END //
 DELIMITER ;
+/* Procedimiento Almacenado 'edit_user' */
 
-/* Crear Procedimiento Almacenado 'delete_user' */
+/* Procedimiento Almacenado 'delete_user' */
 DROP PROCEDURE IF EXISTS sp_delete_user;
 DELIMITER //
 CREATE PROCEDURE sp_delete_user
@@ -143,8 +146,9 @@ BEGIN
     DELETE FROM users WHERE id = p_id;
 END //
 DELIMITER ;
+/* Procedimiento Almacenado 'delete_user' */
 
-/* Crear Procedimiento Almacenado 'verify_identity' */
+/* Procedimiento Almacenado 'verify_identity' */
 DROP PROCEDURE IF EXISTS sp_verify_identity;
 DELIMITER //
 CREATE PROCEDURE sp_verify_identity
@@ -166,6 +170,115 @@ BEGIN
 	END IF;
 END //
 DELIMITER ;
+/* Procedimiento Almacenado 'verify_identity' */
+
+/* Procedimiento Almacenado 'get_users' */
+DROP PROCEDURE IF EXISTS sp_get_users;
+DELIMITER //
+CREATE PROCEDURE sp_get_users()
+BEGIN
+    -- Obtener todos los usuarios.
+    SELECT * FROM users;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'get_users' */
+
+/* Procedimiento Almacenado 'get_users_by_id' */
+DROP PROCEDURE IF EXISTS sp_get_users_by_id;
+DELIMITER //
+CREATE PROCEDURE sp_get_users_by_id
+(
+    IN p_id SMALLINT UNSIGNED
+)
+BEGIN
+    -- Obtener un usuario por su id.
+    SELECT * FROM users WHERE id = p_id;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'get_users_by_id' */
+
+/* ***** Procedimientos Almacenados - 'users' ******/
+
+/* ***** Procedimientos Almacenados - 'shopping_cart' ******/
+
+/* Procedimiento Almacenado 'get_shopping_cart' */
+DROP PROCEDURE IF EXISTS sp_get_shopping_cart;
+DELIMITER //
+CREATE PROCEDURE sp_get_shopping_cart
+(
+    IN p_user_id SMALLINT UNSIGNED
+)
+BEGIN
+    -- Obtener todos los productos del carrito de compras de un usuario.
+    SELECT * FROM shopping_cart WHERE user_id = p_user_id;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'get_shopping_cart' */
+
+/* Procedimiento Almacenado 'add_to_shopping_cart' */
+DROP PROCEDURE IF EXISTS sp_add_to_shopping_cart;
+DELIMITER //
+CREATE PROCEDURE sp_add_to_shopping_cart
+(
+    IN p_user_id SMALLINT UNSIGNED,
+    IN p_product_id SMALLINT UNSIGNED,
+    IN p_quantity SMALLINT UNSIGNED
+)
+BEGIN
+    DECLARE product_count INT;
+    DECLARE product_quantity INT;
+    DECLARE new_quantity INT;
+    SET product_count = 0;
+    SET product_quantity = 0;
+    SET new_quantity = 0;
+
+    -- Verificar si el producto ya existe en el carrito de compras.
+    SELECT COUNT(*) INTO product_count FROM shopping_cart WHERE user_id = p_user_id AND product_id = p_product_id;
+    
+    -- Obtener la cantidad del producto en el carrito de compras.
+    SELECT quantity INTO product_quantity FROM shopping_cart WHERE user_id = p_user_id AND product_id = p_product_id;
+
+    -- Manejar la excepción de producto duplicado.
+    IF product_count > 0 THEN
+        SET new_quantity = product_quantity + p_quantity;
+        UPDATE shopping_cart SET quantity = new_quantity WHERE user_id = p_user_id AND product_id = p_product_id;
+    ELSE
+        INSERT INTO shopping_cart (user_id, product_id, quantity) VALUES (p_user_id, p_product_id, p_quantity);
+    END IF;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'add_to_shopping_cart' */
+
+/* Procedimiento Almacenado 'remove_from_shopping_cart' */
+DROP PROCEDURE IF EXISTS sp_remove_from_shopping_cart;
+DELIMITER //
+CREATE PROCEDURE sp_remove_from_shopping_cart
+(
+    IN p_user_id SMALLINT UNSIGNED,
+    IN p_product_id SMALLINT UNSIGNED
+)
+BEGIN
+    -- Eliminar un producto del carrito de compras.
+    DELETE FROM shopping_cart WHERE user_id = p_user_id AND product_id = p_product_id;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'remove_from_shopping_cart' */
+
+/* Procedimiento Almacenado 'clear_shopping_cart' */
+DROP PROCEDURE IF EXISTS sp_clear_shopping_cart;
+DELIMITER //
+CREATE PROCEDURE sp_clear_shopping_cart
+(
+    IN p_user_id SMALLINT UNSIGNED
+)
+BEGIN
+    -- Eliminar todos los productos del carrito de compras de un usuario.
+    DELETE FROM shopping_cart WHERE user_id = p_user_id;
+END //
+DELIMITER ;
+/* Procedimiento Almacenado 'clear_shopping_cart' */
+
+/* ***** Procedimientos Almacenados - 'shopping_cart' ******/
 
 /* Crear Usuarios 'Administrador' */
 CALL sp_add_user("administrador-1", "admin-1", "John", "Doe", "johndoe@mail.com", "Calle 1 # 2-3", "1234567890", 1);
@@ -175,4 +288,4 @@ CALL sp_add_user("administrador-2", "admin-2", "Anna", "Collins", "annacollins@m
 CALL sp_verify_identity("administrador-1", "admin-1");
 CALL sp_verify_identity("administrador-2", "admin-2");
 
-select * from products;
+select * from shopping_cart;

@@ -14,34 +14,26 @@
                     <div class="row container-inner-shop m-auto mt-4" id="productList">
                         <!-- Productos -->
                         {% for product in products %}
-                        <div class="col-md-6 mb-4">
-                            <div class="card card-custom">
-                                <img src="{{ product[4] }}" class="card-img-top card-img-custom"
-                                    alt="Producto {{ product[0] }}">
-                                <div class="card-body text-center" style="background-color: #80C2AF; color: white;">
-                                    <h5 class="card-title">Producto {{ product[0] }} </h5>
-                                    <h5 class="card-title">{{ product[1] }}</h5>
-                                    <p class="card-text">Descripción: {{ product[2] }}</p>
-                                    <p class="card-text">Precio: {{ product[3] }}</p>
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-danger btn-number" data-type="minus"
-                                                data-field="inputQuantity{{ product[0] }}"><i
-                                                    class="fa-solid fa-minus"></i></button>
-                                        </span>
-                                        <input type="text" id="inputQuantity{{ product[0] }}"
-                                            class="form-control input-number" value="1" min="1" max="10">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-success btn-number" data-type="plus"
-                                                data-field="inputQuantity{{ product[0] }}"><i
-                                                    class="fa-solid fa-plus"></i></button>
-                                        </span>
+                        <form action="/shop/add/{{product[0]}}" method="POST">
+                            <div class="col-md-6 mb-4">
+                                <div class="card card-custom">
+                                    <img src="{{ product[4] }}" class="card-img-top card-img-custom"
+                                        alt="Producto {{ product[0] }}">
+                                    <div class="card-body text-center" style="background-color: #80C2AF; color: white;">
+                                        <h5 class="card-title">Producto {{ product[0] }} </h5>
+                                        <h5 class="card-title">{{ product[1] }}</h5>
+                                        <p class="card-text">Descripción: {{ product[2] }}</p>
+                                        <p class="card-text">Precio: {{ product[3] }}</p>
+                                        <div class="input-group">
+                                            <input type="number" id="" name="quantityInput_{{ product[0] }}"
+                                                class="form-control input-number" value="1" min="1" max="10">
+                                        </div>
+                                        <button class="btn btn-success add-to-cart"
+                                            style="margin-top: 20px;" type="submit">Agregar al cart</button>
                                     </div>
-                                    <a class="btn btn-success add-to-cart" data-product-id="{{ product[0] }}"
-                                        style="margin-top: 20px;" href="{{ url_for(add_to_cart, id=product[0]) }}">Agregar al cart</a>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                         {% endfor %}
                     </div>
                 </div>
@@ -69,6 +61,14 @@
                                 </thead>
                                 <tbody id="checkoutCart">
                                     <!-- Productos del carrito. -->
+                                    {% for shopping_cart_product in shopping_cart_products %}
+                                    <tr>
+                                        <td>{{ shopping_cart_product[0] }}</td>
+                                        <td>{{ shopping_cart_product[1] }}</td>
+                                        <td>{{ shopping_cart_product[2] }}</td>
+                                        <td>{{ shopping_cart_product[3] }}</td>
+                                        <td>{{ shopping_cart_product[3] }}</td>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>

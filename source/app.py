@@ -7,9 +7,11 @@ from config import config
 
 from models.model_users import ModelUsers
 from models.model_products import ModelProducts
+from models.model_shopping_cart import ModelShoppingCart
 
 from models.entities.users import Users
 from models.entities.products import Products
+from models.entities.shopping_cart import ShoppingCart
 
 app = Flask(__name__)
 db = MySQL(app)
@@ -41,6 +43,8 @@ def login():
 
             if logged_user is not None:
                 if logged_user.user_type == 1 or logged_user.user_type == 0:
+                    global shopping_cart
+                    shopping_cart = []
                     login_user(logged_user)
                     return redirect(url_for("dashboard"))
             else:
@@ -58,12 +62,13 @@ def error():
 @app.route("/logout")
 @login_required
 def logout():
+    shopping_cart.clear()
     logout_user()
     return redirect(url_for("login"))
 
 @login_manager_app.user_loader
 def load_user(id):
-    return ModelUsers.get_user_by_id(db, id)
+    return ModelUsers.get_users_by_id(db, id)
 
 def admin_required(func):
     @wraps(func)
@@ -121,8 +126,12 @@ def add_product():
         request.form["imageInput"]
         )
         if validate_form(product):
-            flash("Producto insertado correctamente.")
-            ModelProducts.add_product(db, product, None)
+            try:
+                ModelProducts.add_product(db, product)
+                flash("Producto insertado correctamente.")
+                return redirect(url_for("products"))
+            except Exception as e:
+                raise Exception(e)
         else:
             return render_template("public/products-add.html")
     return redirect(url_for("products"))
@@ -212,7 +221,7 @@ def edit_user(id):
         flash("Usuario actualizado correctamente.")
         return redirect(url_for("users"))
     else:
-        return render_template("public/users-edit.html", id=id, user=ModelUsers.get_user_by_id(db, id))
+        return render_template("public/users-edit.html", id=id, user=ModelUsers.get_users_by_id(db, id))
 
 @app.route("/users/delete/<int:id>", methods=["GET", "POST"])
 @login_required
@@ -227,19 +236,30 @@ def delete_user(id):
     
 # Users - End    
 
+# Shop - Start  
+
 @app.route("/shop")
 @login_required
 def shop():
     try:
         products = ModelProducts.get_products(db)
-        return render_template("public/shop.html", products=products)
+        shopping_cart_products = ModelShoppingCart.get_shopping_cart(db, current_user.id)
+        return render_template("public/shop.html", products=products, shopping_cart_products=shopping_cart_products)
     except Exception as e:
         raise Exception(e)
     
 @app.route("/shop/add/<int:id>", methods=["GET", "POST"])
 @login_required
-def add_to_cart(id):
-    pass
+def add_to_shopping_cart(id):
+    if request.method == "POST":
+        product = ModelProducts.get_product_by_id(db, id)
+        ModelShoppingCart.add_shopping_cart(db, ShoppingCart(0, current_user.id, product[0], request.form["quantityInput_%s" % id]))
+        flash("Producto añadido al carrito correctamente.")
+        return redirect(url_for("shop"))
+    else:
+        return render_template("public/shop.html")
+
+# Shop - End 
 
 @app.route("/about")
 @login_required
