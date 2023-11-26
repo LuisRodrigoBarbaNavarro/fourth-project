@@ -163,6 +163,7 @@ Siga estos pasos para configurar la base de datos:
     5. **Ejecutar programa:**
        - Utiliza `python3 ./source/app.py` para ejecutar el programa Flask.
        - El script asume que el punto de entrada del programa Flask es `app.py`.
+       - Ahora podrá acceder a la aplicación desde 'localhost' o 'http://127.0.0.1:5000/'.
     
     6. **Desactivar entorno virtual:**
        - Utiliza `deactivate` para desactivar el entorno virtual.
@@ -223,11 +224,12 @@ Siga estos pasos para configurar la base de datos:
     5. **Ejecutar programa:**
        - Utiliza `python3 ./source/app.py` para ejecutar el programa Flask.
        - El script asume que el punto de entrada del programa Flask es `app.py`.
+       - Ahora podrá acceder a la aplicación desde 'localhost' o 'http://127.0.0.1:5000/'.
     
-    6. **Desactivar entorno virtual:**
+    7. **Desactivar entorno virtual:**
        - Utiliza `deactivate` para desactivar el entorno virtual.
        - Muestra un mensaje indicando que el entorno virtual se ha desactivado.
     
-    7. **Salir:**
+    8. **Salir:**
        - Muestra un mensaje indicando que el script está saliendo.
        - Finaliza la ejecución del script con `exit 0`.
