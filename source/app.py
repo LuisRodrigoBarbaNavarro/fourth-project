@@ -645,7 +645,7 @@ def receipts_order_by(id):
     )
 # Receipts Order By Route
 
-# ----- Receipt -----
+# ----- Receipts -----
 
 
 
