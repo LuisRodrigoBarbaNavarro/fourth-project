@@ -106,3 +106,128 @@ Siga estos pasos para configurar la base de datos:
 
      Reemplace `MYSQL_USER` y `MYSQL_PASSWORD` con sus preferencias.
 
+---
+
+### Instrucciones de Ejecución para Linux 🌱
+
+#### `run_program.sh`
+
+1. **Permisos:**
+   - Asegúrate de que el archivo tenga permisos de ejecución:
+     ```bash
+     chmod +x run_program.sh
+     ```
+
+2. **Ejecución:**
+   - Ejecuta el script:
+     ```bash
+     ./run_program.sh
+     ```
+   
+3. **Selección de Opciones:**
+   - El script presentará un menú interactivo como el siguiente:
+
+     ```text
+     Selecciona una opción:
+      1. Crear entorno virtual con una versión específica de Python
+      2. Activar entorno virtual
+      3. Instalar dependencias desde requirements.txt
+      4. Visualizar dependencias de requirements.txt
+      5. Ejecutar programa
+      6. Desactivar entorno virtual
+      7. Salir
+     ```
+
+   - Se deberán seleccionar las opciones de manera secuencial hasta llegar a la opción 5.
+
+5. **Pasos Detallados:**
+  
+    1. **Crear entorno virtual con una versión específica de Python:**
+       - Solicita al usuario que ingrese la versión de Python deseada.
+       - Utiliza `python$python_version -m venv environment` para crear un entorno virtual llamado "environment" con la versión específica de Python proporcionada.
+       - Muestra un mensaje indicando que el entorno virtual se creó con éxito.
+    
+    2. **Activar entorno virtual:**
+       - Intenta activar el entorno virtual utilizando `source ./environment/bin/activate` o `. ./environment/bin/activate`.
+       - Muestra un mensaje indicando que el entorno virtual se ha activado.
+    
+    3. **Instalar dependencias desde requirements.txt:**
+       - Verifica si el entorno virtual está activado.
+       - Si es así, utiliza `pip install -r requirements.txt` para instalar las dependencias del archivo `requirements.txt`.
+       - Muestra un mensaje indicando que las dependencias se han instalado.
+    
+    4. **Visualizar dependencias de requirements.txt:**
+       - Verifica si el entorno virtual está activado.
+       - Si es así, utiliza `cat requirements.txt` para mostrar las dependencias listadas en el archivo `requirements.txt`.
+    
+    5. **Ejecutar programa:**
+       - Utiliza `python3 ./source/app.py` para ejecutar el programa Flask.
+       - El script asume que el punto de entrada del programa Flask es `app.py`.
+    
+    6. **Desactivar entorno virtual:**
+       - Utiliza `deactivate` para desactivar el entorno virtual.
+       - Muestra un mensaje indicando que el entorno virtual se ha desactivado.
+    
+    7. **Salir:**
+       - Muestra un mensaje indicando que el script está saliendo.
+       - Finaliza la ejecución del script con `exit 0`.
+
+---
+
+### Instrucciones de Ejecución para Windows 🌱
+
+#### `run_program.ps1`
+
+1. **Ejecución:**
+   - Ejecuta el script en PowerShell:
+     ```powershell
+     .\run_program.ps1
+     ```
+
+2. **Selección de Opciones:**
+   - El script presentará un menú interactivo como el siguiente:
+
+     ```text
+     Selecciona una opción:
+      1. Crear entorno virtual con una versión específica de Python
+      2. Activar entorno virtual
+      3. Instalar dependencias desde requirements.txt
+      4. Visualizar dependencias de requirements.txt
+      5. Ejecutar programa
+      6. Desactivar entorno virtual
+      7. Salir
+     ```
+
+   - Se deberán seleccionar las opciones de manera secuencial hasta llegar a la opción 5.
+
+3. **Pasos Detallados:**
+
+    1. **Crear entorno virtual con una versión específica de Python:**
+       - Solicita al usuario que ingrese la versión de Python deseada.
+       - Utiliza `python$python_version -m venv environment` para crear un entorno virtual llamado "environment" con la versión específica de Python proporcionada.
+       - Muestra un mensaje indicando que el entorno virtual se creó con éxito.
+    
+    2. **Activar entorno virtual:**
+       - Intenta activar el entorno virtual utilizando `source ./environment/bin/activate` o `. ./environment/bin/activate`.
+       - Muestra un mensaje indicando que el entorno virtual se ha activado.
+    
+    3. **Instalar dependencias desde requirements.txt:**
+       - Verifica si el entorno virtual está activado.
+       - Si es así, utiliza `pip install -r requirements.txt` para instalar las dependencias del archivo `requirements.txt`.
+       - Muestra un mensaje indicando que las dependencias se han instalado.
+    
+    4. **Visualizar dependencias de requirements.txt:**
+       - Verifica si el entorno virtual está activado.
+       - Si es así, utiliza `cat requirements.txt` para mostrar las dependencias listadas en el archivo `requirements.txt`.
+    
+    5. **Ejecutar programa:**
+       - Utiliza `python3 ./source/app.py` para ejecutar el programa Flask.
+       - El script asume que el punto de entrada del programa Flask es `app.py`.
+    
+    6. **Desactivar entorno virtual:**
+       - Utiliza `deactivate` para desactivar el entorno virtual.
+       - Muestra un mensaje indicando que el entorno virtual se ha desactivado.
+    
+    7. **Salir:**
+       - Muestra un mensaje indicando que el script está saliendo.
+       - Finaliza la ejecución del script con `exit 0`.
