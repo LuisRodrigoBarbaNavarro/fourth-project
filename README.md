@@ -55,3 +55,54 @@ Asegúrese de tener instalados los siguientes requisitos antes de ejecutar la ap
 2. **MySQL:** Para instalar MySQL, siga las instrucciones específicas para su sistema operativo desde el [sitio oficial de MySQL](https://dev.mysql.com/downloads/).
 
 ---
+
+### Configuración de la Base de Datos 🌱
+
+Siga estos pasos para configurar la base de datos:
+
+1. **Importar el Dump de la Base de Datos:**
+
+   - **Método 1 (Consola):**
+   
+     - Asegúrese de tener MySQL Shell instalado y ejecutándose.
+
+     - Desde la terminal, use el siguiente comando de MySQL Shell para importar el dump de la base de datos. Ajuste la ruta del archivo según la ubicación de su proyecto.
+
+       ```bash
+       mysql -u root -p root flower_shop < database/dumps/flower-shop-dump.sql
+       ```
+
+       Ingrese la contraseña cuando se le solicite.
+
+   - **Método 2 (Recomendado) (MySQL Workbench Community):**
+
+     - Inicie sesión como usuario `root` en MySQL Workbench Community.
+
+     - Vaya al apartado de importación.
+
+     - Seleccione el dump desde `database/dumps/flower-shop-dump.sql`.
+
+     - Inicie la importación.
+
+2. **Configurar Credenciales de la Aplicación:**
+
+   - Si desea cambiar las credenciales predeterminadas para el usuario y la contraseña de la base de datos en la aplicación (Por defecto son 'root' y 'root', para usuario y contraseña respectivamente), modifique el archivo `source/config.py`.
+
+     ```python
+     # Configuraciones
+     class development_config():
+         DEBUG = True
+         SECRET_KEY = "qhrf$edjYTJ)*21nsThdK"
+         MYSQL_HOST = "localhost"
+         MYSQL_USER = ""  # Cambie al nuevo nombre de usuario
+         MYSQL_PASSWORD = ""  # Cambie a la nueva contraseña
+         MYSQL_DB = "flower_shop"
+     # Configuraciones
+
+     # Configuraciones (Entorno)
+     config = {"development": development_config}
+     # Configuraciones (Entorno)
+     ```
+
+     Reemplace `MYSQL_USER` y `MYSQL_PASSWORD` con sus preferencias.
+
