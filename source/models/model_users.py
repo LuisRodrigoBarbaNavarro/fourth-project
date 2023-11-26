@@ -1,6 +1,7 @@
 from .entities.users import Users
 
 class ModelUsers():
+    
     @classmethod
     def login(self, db, user):
         try:

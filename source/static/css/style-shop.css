@@ -86,7 +86,19 @@ body {
 }
 
 .card-custom img {
+    width: 200px;
     height: 200px;
+}
+
+.list-group-item-custom :hover {
+    background-color: #80C2AF;
+    color: #fff;
+}
+
+#list-group-item-custom {
+    font-weight: 600;
+    text-align: left;
+    color: #80C2AF;
 }
 
 @media screen and (max-width: 991px) {

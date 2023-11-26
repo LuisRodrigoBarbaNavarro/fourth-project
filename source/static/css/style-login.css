@@ -46,4 +46,10 @@ body {
         -20px -20px 60px #93dfc9;
 }
 
+@media (max-width: 768px) {
+    .container-outer-custom {
+        transform: scale(0.8);
+    }
+}
+
 /* End - Main */

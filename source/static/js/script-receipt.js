@@ -5,7 +5,7 @@
  */
 
 /* Verificación de inicio de sesión */
-
+/*
 var authenticatedUser = localStorage.getItem("authenticatedUser");
 
 if (!authenticatedUser) {
@@ -32,11 +32,11 @@ function logout() {
   localStorage.removeItem("authenticatedUser");
   window.location.href = "../html/index.html";
 }
-
+*/
 /* Verificación de inicio de sesión */
 
 /* Generación de recibo de compra */
-
+/*
 document.addEventListener("DOMContentLoaded", function () {
   // Recupera los datos del carrito desde el almacenamiento local y además obtiene los elementos del DOM que se van a actualizar.
   const dataCart = localStorage.getItem("data-cart");
@@ -86,5 +86,5 @@ document.addEventListener("DOMContentLoaded", function () {
     )}</p>`;
   }
 });
-
+*/
 /* Generación de recibo de compra */

@@ -1,16 +1,7 @@
 from .entities.shopping_cart import ShoppingCart
 
 class ModelShoppingCart():
-    @classmethod
-    def get_shopping_cart(cls, db, user_id):
-        try:
-            cursor = db.connection.cursor()
-            cursor.execute("CALL sp_get_shopping_cart(%s)", (user_id,))
-            shopping_cart = cursor.fetchall()
-            return shopping_cart
-        except Exception as ex:
-            raise Exception(ex)
-        
+    
     @classmethod
     def add_shopping_cart(cls, db, shopping_cart):
         try:
@@ -35,5 +26,45 @@ class ModelShoppingCart():
             cursor = db.connection.cursor()
             cursor.execute("CALL sp_clear_shopping_cart(%s)", (user_id,))
             db.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
+    
+    @classmethod
+    def get_shopping_cart(cls, db, user_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_get_shopping_cart(%s)", (user_id,))
+            shopping_cart = cursor.fetchall()
+            return shopping_cart
+        except Exception as ex:
+            raise Exception(ex)
+
+    @classmethod
+    def get_essential_data(cls, db, user_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_get_essential_data(%s)", (user_id,))
+            essential_data = cursor.fetchall()
+            return essential_data
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def get_total_price(cls, db, user_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_get_total_price(%s)", (user_id,))
+            total_price = cursor.fetchone()
+            return total_price[0]
+        except Exception as ex:
+            raise Exception(ex)
+        
+    @classmethod
+    def get_count_shopping_cart(cls, db, user_id):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_get_count_shopping_cart(%s)", (user_id,))
+            count = cursor.fetchone()
+            return count[0]
         except Exception as ex:
             raise Exception(ex)

@@ -39,13 +39,30 @@ body {
     box-shadow: 5px 5px 15px 0px #5b5b5b;
 }
 
-.container-input-custom {
+.container-dashboard-header {
     width: 95%;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
+    height: auto;
+    
+    font-family: Tilt Neon;
+    font-weight: 400;
+    color: #80c2af;
 
+    background-color: white;
+
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px 0px #5b5b5b;
+}
+
+.container-dashboard-custom {
+    width: 95%;
+    height: auto;
+
+    font-family: Tilt Neon;
+    font-weight: 400;
+}
+
+.container-dashboard-item {
+    height: 30vh;
     background-color: white;
 
     border-radius: 15px;

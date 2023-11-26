@@ -1,69 +1,53 @@
 from .entities.products import Products
 
 class ModelProducts():
+    
     @classmethod
-    def add_product(cls, db, product, id=None):
+    def add_product(self, db, product):
         try:
-            sql_statement = """
-                            INSERT INTO flower_shop.products (name, description, price, url_image) VALUES (%s, %s, %s, %s)
-                            """
             cursor = db.connection.cursor()
-            cursor.execute(sql_statement, (product.name,
-                            product.description, product.price, product.url_image))
+            cursor.execute("CALL sp_add_product(%s, %s, %s, %s)", (product.name, product.description, product.price, product.url_image))
             db.connection.commit()
-            return cursor.lastrowid
-        except Exception as e:
-            raise Exception(e)
+        except Exception as ex:
+            raise Exception(ex)
+    
+    @classmethod
+    def edit_product(self, db, product):
+        try:
+            cursor = db.connection.cursor()
+            cursor.execute("CALL sp_edit_product(%s, %s, %s, %s, %s)", (product.id, product.name, product.description, product.price, product.url_image))
+            db.connection.commit()
+        except Exception as ex:
+            raise Exception(ex)
 
     @classmethod
-    def edit_product(cls, db, product, id):
+    def delete_product(self, db, id):
         try:
-            sql_statement = """
-                            UPDATE flower_shop.products SET name = %s, description = %s, price = %s, url_image = %s WHERE id = %s
-                            """
             cursor = db.connection.cursor()
-            cursor.execute(sql_statement, (product.name,
-                            product.description, product.price, product.url_image, id))
+            cursor.execute("CALL sp_delete_product(%s)", (id,))
             db.connection.commit()
-            return cursor.lastrowid
-        except Exception as e:
-            raise Exception(e)
-        
-    @classmethod
-    def delete_product(cls, db, id):
-        try:
-            sql_statement = """
-                            DELETE FROM flower_shop.products WHERE id = %s
-                            """
-            cursor = db.connection.cursor()
-            cursor.execute(sql_statement, (id,))
-            db.connection.commit()
-            return cursor.lastrowid
-        except Exception as e:
-            raise Exception(e)
-
+        except Exception as ex:
+            raise Exception(ex)
+    
     @classmethod
     def get_products(cls, db):
         try:
-            sql_statement = """
-                            SELECT * FROM flower_shop.products
-                            """
             cursor = db.connection.cursor()
-            cursor.execute(sql_statement)
+            cursor.execute("CALL sp_get_products()")
             products = cursor.fetchall()
-            return products
-        except Exception as e:
-            raise Exception(e)
-        
+            return [Products(row[0], row[1], row[2], row[3], row[4]) for row in products]
+        except Exception as ex:
+            raise Exception(ex)
+    
     @classmethod
-    def get_product_by_id(cls, db, id):
+    def get_products_by_id(self, db, id):
         try:
-            sql_statement = """
-                            SELECT * FROM flower_shop.products WHERE id = %s
-                            """
             cursor = db.connection.cursor()
-            cursor.execute(sql_statement, (id,))
-            product = cursor.fetchone()
-            return product
-        except Exception as e:
-            raise Exception(e)
+            cursor.execute("CALL sp_get_products_by_id(%s)", (id,))
+            row = cursor.fetchone()
+            if row:
+                return Products(row[0], row[1], row[2], row[3], row[4])
+            else:
+                return None
+        except Exception as ex:
+            raise Exception(ex)

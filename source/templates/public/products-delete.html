@@ -1,14 +1,18 @@
 <!-- Rodrigo Barba - Shinia -->
 {% extends 'base.html' %}
+
 {% block css_sheets %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style-products.css') }}">
 {% endblock %}
+
 {% block subtitle %} Catálogo - Eliminar Producto {% endblock %}
+
 {% block content %}
+
 <section>
     <!-- Formulario de Eliminar Producto -->
     <div class="container-input-custom">
-        <h1 class="pt-2 mt-3">Eliminar Producto</i></h1>
+        <h1 class="pt-3 mt-3"><i class="fa-solid fa-trash"></i> - Eliminar Producto</i></h1>
         <div class="row">
             <div class="col-md-12">
                 <hr>
@@ -23,7 +27,9 @@
     </div>
     <!-- Formulario de Eliminar Producto -->
 </section>
+
 {% endblock %}
+
 {% block js_scripts %}
 <script src="{{ url_for('static', filename='js/script-products.js') }}"></script>
 {% endblock %}

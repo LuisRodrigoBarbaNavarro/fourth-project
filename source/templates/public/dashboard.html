@@ -1,9 +1,12 @@
 <!-- Rodrigo Barba - Shinia -->
 {% extends 'base.html' %}
+
 {% block css_sheets %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style-dashboard.css') }}">
 {% endblock %}
+
 {% block subtitle %} Dashboard {% endblock %}
+
 {% block content %}
 <section>
     <!-- Jumbotron  -->
@@ -26,6 +29,7 @@
     <!-- Jumbotron -->
 </section>
 {% endblock %}
+
 {% block js_scripts %}
 <script src="{{ url_for('static', filename='js/script-dashboard.js') }}"></script>
 {% endblock %}

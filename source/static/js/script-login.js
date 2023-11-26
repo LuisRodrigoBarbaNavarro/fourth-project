@@ -1,9 +1,7 @@
-/*
-Rodrigo Barba - Shinia
-*/
+/* Rodrigo Barba - Shinia */
 
 /**
- * @fileoverview Archivo JS para la página de inicio de sesión
+ * @fileoverview Documento de JavaScript para login.html
  */
 
 /*

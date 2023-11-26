@@ -3,19 +3,21 @@
 {% block css_sheets %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style-products.css') }}">
 
-<!-- DataTables CSS -->
+<!-- Data Tables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 
-<!-- jQuery -->
+<!-- Query -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<!-- DataTables JS -->
+<!-- Data Tables JS -->
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-
 {% endblock %}
+
 {% block subtitle %} Catálogo - Insertar Producto {% endblock %}
+
 {% block content %}
+
 <!-- Notificaciones -->
 <section>
     {% with messages = get_flashed_messages() %}
@@ -34,7 +36,7 @@
 <section>
     <!-- Formulario de Insertar Producto -->
     <div class="container-input-custom">
-        <h1 class="pt-3 mt-3"><i class="fa-solid fa-wand-magic-sparkles" style="color: #80c2af;"></i> - Insertar Producto</i></h1>
+        <h1 class="pt-3 mt-3"><i class="fa-solid fa-square-plus"></i> - Insertar Producto</i></h1>
         <div class="row">
             <div class="col-md-12">
                 <form id="product-form" action="/products/add" method="POST">
@@ -86,18 +88,17 @@
                             </tr>
                         </thead>
                         <tbody id="product-list">
-                            <!-- Aquí se mostrarán los productos -->
                             {% for product in products %}
                             <tr>
-                                <td>{{ product[0] }}</td>
-                                <td>{{ product[1] }}</td>
-                                <td>{{ product[2] }}</td>
-                                <td>{{ product[3] }}</td>
-                                <td><img src="{{ product[4] }}" alt="" srcset="" width="100"></td>
+                                <td>{{ product.id }}</td>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>${{ product.price }}</td>
+                                <td><img src="{{ url_for('static', filename='img/flower-error-2.svg') if product.url_image == '' else product.url_image }}" alt="" srcset="" width="75"></td>
                                 <td>
                                     <a class="btn btn-success"
-                                        href="{{ url_for('edit_product', id=product[0])}}">Actualizar</a>
-                                    <a class="btn btn-danger" href="{{ url_for('delete_product', id=product[0])}}">Eliminar</a>
+                                        href="{{ url_for('edit_product', id=product.id)}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a class="btn btn-danger" href="{{ url_for('delete_product', id=product.id)}}"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -109,7 +110,9 @@
     </div>
     <!-- Lista de Productos -->
 </Section>
+
 {% endblock %}
+
 {% block js_scripts %}
 <script src="{{ url_for('static', filename='js/script-products.js') }}"></script>
 {% endblock %}

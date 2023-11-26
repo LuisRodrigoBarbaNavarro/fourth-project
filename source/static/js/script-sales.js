@@ -168,20 +168,21 @@ $(document).ready(function() {
   $('#product-table').DataTable({
       "paging": true,        // Habilita la paginación
       "searching": true,     // Habilita la búsqueda
-      "pageLength": 5,       // Se muestran 5 filas por página
-      "lengthMenu": [5, 10, 15, 25], // Se puede elegir mostrar 5, 10, 15 o 25 filas por página
+      "pageLength": 3,       // Se muestran 3 filas por página
+      "lengthMenu": [3, 6, 9, 12], // Se puede elegir mostrar 3, 6, 9 o 12 filas por página
       "language": {          // Se configura el idioma del plugin
           "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
       },
-      "scrollX": true,       // Habilita el scroll horizontal
       "columnDefs": [
           { "width": "5%", "targets": 0 },
           { "width": "15%", "targets": 1 },
-          { "width": "25%", "targets": 2 },
-          { "width": "10%", "targets": 3 },
-          { "width": "25%", "targets": 4 },
-          { "width": "20%", "targets": 5 }
+          { "width": "20%", "targets": 2 },
+          { "width": "5%", "targets": 3 },
+          { "width": "20%", "targets": 4 },
+          { "width": "15%", "targets": 5 },
+          { "width": "20%", "targets": 6 }
       ],
+      "scrollX": "100%",
       "ordering": true,      // Habilita la ordenación
       "info": true,          // Muestra información sobre la paginación
       "lengthChange": true   // Permite cambiar el número de elementos mostrados por página

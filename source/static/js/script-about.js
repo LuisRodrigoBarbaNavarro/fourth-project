@@ -5,7 +5,7 @@
  */
 
 /* Verificación de inicio de sesión */
-
+/*
 var authenticatedUser = localStorage.getItem("authenticatedUser");
 
 if (!authenticatedUser) {
@@ -32,5 +32,5 @@ function logout() {
   localStorage.removeItem("authenticatedUser");
   window.location.href = "../html/index.html";
 }
-
+*/
 /* Verificación de inicio de sesión */
